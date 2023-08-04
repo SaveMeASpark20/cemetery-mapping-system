@@ -32,7 +32,7 @@
 };
 
 if(!navigator.geolocation){
-  console.log("Browser doesn't support the navigator feature")
+  alert("Browser doesn't support the navigator feature")
 }else{
   setInterval(() => {
     navigator.geolocation.getCurrentPosition(success, error, options)
