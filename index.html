@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="leaflet-routing-machine-3.2.12/dist/leaflet-routing-machine.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="leaflet-routing-machine-3.2.12/dist/leaflet-routing-machine.js"></script>
+  <style>
+    #map {position: absolute; top:0; bottom:0; left:0; right:0;}
+  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    var map = L.map('map').setView([14.599551, 120.965368], 20);
+    L.tileLayer('https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=H5TUiaj7um05GvuKfuYW', {
+      attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
+    }).addTo(map);
+
+
+  const options = {
+    enableHighAccuracy: true, 
+    // Get high accuracy reading, if available (default false)
+    timeout: 5000, 
+    // Time to return a position successfully before error (default infinity)
+    maximumAge: 2000, 
+    // Milliseconds for which it is acceptable to use cached position (default 0)
+};
+
+if(!navigator.geolocation){
+  console.log("Browser doesn't support the navigator feature")
+}else{
+  setInterval(() => {
+    navigator.geolocation.getCurrentPosition(success, error, options)
+  }, 5000);
+  
+}
+
+
+// Fires success function immediately and when user position changes
+
+// let marker;
+
+
+
+function success(pos) {
+
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
+    const accuracy = pos.coords.accuracy; // Accuracy in metres
+
+    var marker = L.marker([lat, lng]).addTo(map);
+  
+
+    // map.on('click', function(e){
+    //   if(marker)
+    //     map.removeLayer(marker);
+  
+    L.Routing.control({
+      waypoints:[
+        L.latLng(lat, lng),
+        L.latLng(14.599389081724974, 120.96606199502615)
+      ]
+    }).addTo(map);
+  //})
+}
+
+function error(err) {
+    if (err.code === 1) {
+        alert("Please allow geolocation access");
+        // Runs if user refuses access
+    } else {
+        alert("Cannot get current location");
+        // Runs if there was a technical problem.
+    }
+}
+
+</script>
+</body>
+</html>   
