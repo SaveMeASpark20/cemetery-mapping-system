@@ -55,17 +55,17 @@ function success(pos) {
 
     var marker = L.marker([lat, lng]).addTo(map);
   
-
-    // map.on('click', function(e){
-    //   if(marker)
-    //     map.removeLayer(marker);
-  
-    L.Routing.control({
+    if(marker){
+      map.removeLayer(marker);
+      L.Routing.control({
       waypoints:[
         L.latLng(lat, lng),
-        L.latLng(14.599389081724974, 120.96606199502615)
+        L.latLng(14.599014600014977, 120.96643375455132)
       ]
     }).addTo(map);
+    }
+  
+    
   //})
 }
 
